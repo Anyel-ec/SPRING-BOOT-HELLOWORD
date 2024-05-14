@@ -2,10 +2,9 @@ package top.anyel.hola.controller;
 
 import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.anyel.hola.entities.Greeting;
+import top.anyel.hola.entities.GreetingRequest;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -27,6 +26,35 @@ public class GreetingController {
         return new Greeting(counter.incrementAndGet(),
                 String.format(template, name, lastName, address, formattedDate), (age));
     }
+
+    // path variable
+    @GetMapping("/greeting/{name}/{lastName}/{address}/{birthdate}")
+    public Greeting greetingPath(@PathVariable String name,
+                                 @PathVariable String lastName,
+                                 @PathVariable String address,
+                                 @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthdate) {
+        String formattedDate = birthdate.toString(); // convertir la fecha a string
+        int age = calculateAge(birthdate); // calcular la edad
+        return new Greeting(counter.incrementAndGet(),
+                String.format(template, name, lastName, address, formattedDate), (age));
+    }
+
+
+    // request body
+    // request body
+    @PostMapping("/greeting/body")
+    public Greeting greetingBody(@RequestBody GreetingRequest greetingRequest) {
+        String name = greetingRequest.name();
+        String lastName = greetingRequest.lastName();
+        String address = greetingRequest.address();
+        LocalDate birthdate = greetingRequest.birthdate();
+
+        String formattedDate = birthdate.toString(); // convertir la fecha a string
+        int age = calculateAge(birthdate); // calcular la edad
+        return new Greeting(counter.incrementAndGet(),
+                String.format(template, name, lastName, address, formattedDate), age);
+    }
+
 
     @GetMapping("/")
     public String home() {
