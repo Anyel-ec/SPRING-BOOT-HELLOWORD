@@ -1,7 +1,5 @@
-package top.anyel.hola.entities;
+package top.anyel.hola.entity;
 
-
-import java.time.LocalDateTime;
 
 public record Greeting(long id, String content, int age) {
 

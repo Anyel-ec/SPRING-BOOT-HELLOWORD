@@ -1,4 +1,4 @@
-package top.anyel.hola.entities;
+package top.anyel.hola.entity;
 
 import java.time.LocalDate;
 

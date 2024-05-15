@@ -1,10 +1,9 @@
 package top.anyel.hola.controller;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import top.anyel.hola.entities.Greeting;
-import top.anyel.hola.entities.GreetingRequest;
+import top.anyel.hola.entity.Greeting;
+import top.anyel.hola.entity.GreetingRequest;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -40,8 +39,7 @@ public class GreetingController {
     }
 
 
-    // request body
-    // request body
+    // request bodY
     @PostMapping("/greeting/body")
     public Greeting greetingBody(@RequestBody GreetingRequest greetingRequest) {
         String name = greetingRequest.name();
@@ -55,6 +53,13 @@ public class GreetingController {
                 String.format(template, name, lastName, address, formattedDate), age);
     }
 
+    @GetMapping("/greeting/{lastname}")
+    public Greeting greetingRequest(@PathVariable (value = "lastname") String lastname,
+                                    @RequestParam(value = "name", defaultValue = "Angel") String name,
+                                    @RequestParam(value="age", defaultValue = "22") int age){
+        return new Greeting(counter.incrementAndGet(),
+                (name), (age));
+    }
 
     @GetMapping("/")
     public String home() {
